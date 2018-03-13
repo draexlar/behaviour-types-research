@@ -1,0 +1,26 @@
+module distributed.demos_BuyTicket_Client;
+
+type <java> "java.lang.String" from "java.lang.String" as Travel;
+type <java> "java.lang.Integer" from "java.lang.Integer" as Price;
+type <java> "java.lang.String" from "java.lang.String" as Invoice;
+
+local protocol BuyTicket_C(self C, role A, role B) {
+    request(String) to A;
+    data(int) from A;
+    payment(int) to B;
+    choice at B {
+      approve(Boolean) from B;
+      invoice(String) from A;
+    } or {
+      refuse(Boolean) from B;
+    }
+  // request(Travel) to A;
+  // data(Price) from A;
+  // payment(Price) to B;
+  // choice at B {
+  //   approve(Boolean) from B;
+  //   invoice(Invoice) from A;
+  // } or {
+  //   refuse(Boolean) from B;
+  // }
+}

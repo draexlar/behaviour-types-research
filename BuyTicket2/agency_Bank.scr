@@ -1,0 +1,19 @@
+module distributed.demos_BuyTicket_Bank;
+
+// type <java> "java.lang.Integer" from "java.lang.Integer" as Price;
+
+local protocol BuyTicket_B(role C, role A, self B) {
+  payment(int) from C;
+  choice at B {
+    approve(Boolean) to C,A;
+    invoice(String) from A
+  } or {
+    refuse(Boolean) to C, A;
+  }
+  // payment(Price) from C;
+  // choice at B {
+  //   approve(Boolean) to C,A;
+  // } or {
+  //   refuse(Boolean) to C;
+  // }
+}
