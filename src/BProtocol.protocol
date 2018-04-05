@@ -1,18 +1,20 @@
+package Agency;
+
 typestate BProtocol {
 	State0 = {
-		int receive_paymentintFromC(): State1
+		int receive_checkPriceFromC(): State1
 	}
 	State1 = {
 		void send_APPROVEToCA(): State2,
 		void send_REFUSEToCA(): State4
 	}
 	State2 = {
-		void send_approveBooleanToCA(Boolean): State3
+		void send_approveCodeToCA(String): State3
 	}
 	State3 = {
-		String receive_invoiceStringFromA(): end
+		void send_paymentPriceToA(int): end
 	}
 	State4 = {
-		void send_refuseBooleanToCA(Boolean): end
+		void send_refuseCodeToAC(String): end
 	}
 }

@@ -1,0 +1,20 @@
+type <java> "java.lang.String" from "java.lang.String" as Flight;
+type <java> "java.lang.Integer" from "java.lang.Integer" as Price;
+type <java> "java.lang.String" from "java.lang.String" as Invoice;
+type <java> "java.lang.String" from "java.lang.String" as Code;
+type <java> "java.lang.String" from "java.lang.String" as Ticket;
+
+global protocol Agency(role C, role A, role B) {
+    book(Flight) from C to A;
+    fare(Price) from A to C;
+    check(Price) from C to B;
+    choice at B {
+        approve(Code) from B to C,A;
+        payment(Price) from B to A;
+        invoice(Invoice) from A to C;
+        ticket(Ticket) from A to C;
+    } or {
+        refuse(Code) from B to A,C;
+    }
+}
+

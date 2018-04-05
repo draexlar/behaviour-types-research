@@ -1,4 +1,3 @@
-import mungo.lib.Typestate;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -6,15 +5,16 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.ServerSocket;
 import java.net.UnknownHostException;
+import mungo.lib.Typestate;
 
 @Typestate("AProtocol")
 public class ARole{
-
+	
 	private BufferedReader socketCIn = null;
 	private PrintWriter socketCOut = null;
 	private BufferedReader socketBIn = null;
 	private PrintWriter socketBOut = null;
-
+	
 	public ARole() {
 		// Bind the sockets
 		ServerSocket serverB = null;
@@ -23,9 +23,6 @@ public class ARole{
 		}
 		catch (IOException e) {
 			System.out.println("Unable to listen on port");
-			System.out.println(e.getMessage());
-			System.out.println(e.getLocalizedMessage());
-			System.out.println(e.getCause());
 			System.exit(-1);
 		}
 		// Accept a client connection
@@ -34,6 +31,7 @@ public class ARole{
 			System.out.println("Accepting...");
 			socketB = serverB.accept();
 		}
+
 		catch (IOException e) {
 
 			System.out.println("Accept failed");
@@ -58,21 +56,14 @@ public class ARole{
 		}
 		catch(UnknownHostException e) {
 			System.out.println("Unable to connect to the remote host");
-			System.out.println(e.getMessage());
-			System.out.println(e.getLocalizedMessage());
-			System.out.println(e.getCause());
-			System.exit(-1);
-		}
+			System.exit(-1);}
 		catch (IOException e) {
 			System.out.println("Input/output error, unable to connect");
-			System.out.println(e.getMessage());
-			System.out.println(e.getLocalizedMessage());
-			System.out.println(e.getCause());
 			System.exit(-1);
 		}
 	}
-
-	public String receive_requestStringFromC() {
+	
+	public String receive_bookFlightFromC() {
 		String line = "";
 		try {
 			line  = this.socketCIn.readLine();
@@ -80,15 +71,15 @@ public class ARole{
 
 		catch(IOException e) {
 			System.out.println("Input/Outpur error.");
-			System.exit(-1);
-		}
+			System.exit(-1);}
+		// Perform a cast of line to the appropriate type and then return it
 		return line;
 	}
-
-	public void send_dataintToC(int payload) {
+	
+	public void send_farePriceToC(int payload) {
 		this.socketCOut.println(payload);
 	}
-
+	
 	public Choice1 receive_Choice1LabelFromB() {
 		String stringLabelChoice1 = "";
 		try {
@@ -107,8 +98,8 @@ public class ARole{
 				return Choice1.REFUSE;
 		}
 	}
-
-	public Boolean receive_approveBooleanFromB() {
+	
+	public String receive_approveCodeFromB() {
 		String line = "";
 		try {
 			line  = this.socketBIn.readLine();
@@ -116,18 +107,33 @@ public class ARole{
 
 		catch(IOException e) {
 			System.out.println("Input/Outpur error.");
-			System.exit(-1);
-		}
+			System.exit(-1);}
 		// Perform a cast of line to the appropriate type and then return it
-		return Boolean.parseBoolean(line);
+		return line;
 	}
+	
+	public int receive_paymentPriceFromB() {
+		String line = "";
+		try {
+			line  = this.socketBIn.readLine();
+		}
 
-	public void send_invoiceStringToBC(String payload) {
-		this.socketBOut.println(payload);
+		catch(IOException e) {
+			System.out.println("Input/Outpur error.");
+			System.exit(-1);}
+		// Perform a cast of line to the appropriate type and then return it
+		return Integer.parseInt(line);
+	}
+	
+	public void send_invoiceInvoiceToC(String payload) {
 		this.socketCOut.println(payload);
 	}
 	
-	public Boolean receive_refuseBooleanFromB() {
+	public void send_ticketTicketToC(String payload) {
+		this.socketCOut.println(payload);
+	}
+	
+	public String receive_refuseCodeFromB() {
 		String line = "";
 		try {
 			line  = this.socketBIn.readLine();
@@ -135,9 +141,9 @@ public class ARole{
 
 		catch(IOException e) {
 			System.out.println("Input/Outpur error.");
-			System.exit(-1);
-		}
+			System.exit(-1);}
 		// Perform a cast of line to the appropriate type and then return it
-		return Boolean.parseBoolean(line);
+		return line;
 	}
+	
 }

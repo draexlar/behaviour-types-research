@@ -1,21 +1,29 @@
+package Agency;
+
 typestate AProtocol {
 	State0 = {
-		String receive_requestStringFromC(): State1
+		String receive_bookFlightFromC(): State1
 	}
 	State1 = {
-		void send_dataintToC(int): State2
+		void send_farePriceToC(int): State2
 	}
 	State2 = {
 		Choice1 receive_Choice1LabelFromB():
-		<APPROVE: State3, REFUSE: State5>
+		<APPROVE: State3, REFUSE: State7>
 	}
 	State3 = {
-		Boolean receive_approveBooleanFromB(): State4
+		String receive_approveCodeFromB(): State4
 	}
 	State4 = {
-		void send_invoiceStringToBC(String): end
+		int receive_paymentPriceFromB(): State5
 	}
 	State5 = {
-		Boolean receive_refuseBooleanFromB(): end
+		void send_invoiceInvoiceToC(String): State6
+	}
+	State6 = {
+		void send_ticketTicketToC(String): end
+	}
+	State7 = {
+		String receive_refuseCodeFromB(): end
 	}
 }

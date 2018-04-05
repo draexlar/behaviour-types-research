@@ -1,0 +1,15 @@
+type <java> "java.lang.String" from "java.lang.String" as Flight;
+type <java> "java.lang.Integer" from "java.lang.Integer" as Price;
+type <java> "java.lang.String" from "java.lang.String" as Invoice;
+type <java> "java.lang.String" from "java.lang.String" as Code;
+type <java> "java.lang.String" from "java.lang.String" as Ticket;
+
+local protocol Agency at B(role C,role A,role B) {
+	check(Price) from C;
+	choice at B {
+		approve(Code) to C,A;
+		payment(Price) to A;
+	} or {
+		refuse(Code) to A,C;
+	}
+}

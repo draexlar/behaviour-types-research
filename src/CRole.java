@@ -1,4 +1,3 @@
-import mungo.lib.Typestate;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,14 +6,16 @@ import java.net.Socket;
 import java.net.ServerSocket;
 import java.net.UnknownHostException;
 
+import mungo.lib.Typestate;
+
 @Typestate("CProtocol")
 public class CRole{
-
+	
 	private BufferedReader socketAIn = null;
 	private PrintWriter socketAOut = null;
 	private BufferedReader socketBIn = null;
 	private PrintWriter socketBOut = null;
-
+	
 	public CRole() {
 		// Bind the sockets
 		ServerSocket serverA = null;
@@ -26,8 +27,7 @@ public class CRole{
 		}
 		catch(IOException e) {
 			System.out.println("Unable to listen on ports");
-			System.exit(-1);
-		}
+			System.exit(-1);}
 		// Accept a client connection
 		Socket socketA = null;
 		Socket socketB = null;
@@ -55,27 +55,28 @@ public class CRole{
 			System.exit(-1);
 		}
 	}
-
-	public void send_requestStringToA(String payload) {
+	
+	public void send_bookFlightToA(String payload) {
 		this.socketAOut.println(payload);
 	}
-
-	public int receive_dataintFromA() {
+	
+	public int receive_farePriceFromA() {
 		String line = "";
 		try {
 			line  = this.socketAIn.readLine();
 		}
+
 		catch(IOException e) {
 			System.out.println("Input/Outpur error.");
-			System.exit(-1);
-		}
+			System.exit(-1);}
+		// Perform a cast of line to the appropriate type and then return it
 		return Integer.parseInt(line);
 	}
-
-	public void send_paymentintToB(int payload) {
+	
+	public void send_checkPriceToB(int payload) {
 		this.socketBOut.println(payload);
 	}
-
+	
 	public Choice1 receive_Choice1LabelFromB() {
 		String stringLabelChoice1 = "";
 		try {
@@ -85,7 +86,7 @@ public class CRole{
 			System.out.println("Input/Outpur error, unable to get label");
 			System.exit(-1);
 		}
-		int intLabelChoice1 = stringLabelChoice1.matches("APPROVE") ? 1 : 2;;
+		int intLabelChoice1 = stringLabelChoice1.matches("APPROVE") ? 1 : 2;
 		switch(intLabelChoice1) {
 			case 1:
 				return Choice1.APPROVE;
@@ -94,42 +95,56 @@ public class CRole{
 				return Choice1.REFUSE;
 		}
 	}
-
-	public Boolean receive_approveBooleanFromB() {
+	
+	public String receive_approveCodeFromB() {
 		String line = "";
 		try {
 			line  = this.socketBIn.readLine();
 		}
+
 		catch(IOException e) {
 			System.out.println("Input/Outpur error.");
-			System.exit(-1);
-		}
+			System.exit(-1);}
 		// Perform a cast of line to the appropriate type and then return it
-		return Boolean.parseBoolean(line);
+		return line;
 	}
-
-	public String receive_invoiceStringFromA() {
+	
+	public String receive_invoiceInvoiceFromA() {
 		String line = "";
 		try {
 			line  = this.socketAIn.readLine();
 		}
+
 		catch(IOException e) {
 			System.out.println("Input/Outpur error.");
-			System.exit(-1);
-		}
+			System.exit(-1);}
+		// Perform a cast of line to the appropriate type and then return it
 		return line;
 	}
+	
+	public String receive_ticketTicketFromA() {
+		String line = "";
+		try {
+			line  = this.socketAIn.readLine();
+		}
 
-	public Boolean receive_refuseBooleanFromB() {
+		catch(IOException e) {
+			System.out.println("Input/Outpur error.");
+			System.exit(-1);}
+		// Perform a cast of line to the appropriate type and then return it
+		return line;
+	}
+	
+	public String receive_refuseCodeFromB() {
 		String line = "";
 		try {
 			line  = this.socketBIn.readLine();
 		}
+
 		catch(IOException e) {
 			System.out.println("Input/Outpur error.");
-			System.exit(-1);
-		}
+			System.exit(-1);}
 		// Perform a cast of line to the appropriate type and then return it
-		return Boolean.parseBoolean(line);
+		return line;
 	}
 }

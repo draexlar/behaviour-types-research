@@ -7,7 +7,7 @@ import java.net.ServerSocket;
 import java.net.UnknownHostException;
 
 public class AMain {
-
+	
 	public static String safeRead(BufferedReader readerA) {
 		String readline = "";
 		try {
@@ -19,29 +19,37 @@ public class AMain {
 		}
 		return readline;
 	}
-
+	
 	public static void main(String[] args) {
 		// Create the current role
 		ARole currentA =  new ARole();
 		// readerA can be used to input strings, and then use them in send method invocation
 		BufferedReader readerA = new BufferedReader(new InputStreamReader(System.in));
 		// Method invocation follows the A typestate
-		String payload1 = currentA.receive_requestStringFromC();
-		System.out.println("Received from C: " + payload1);
-		System.out.print("Send to C: ");
-		int payload2 = Integer.parseInt(safeRead(readerA));
-		currentA.send_dataintToC(payload2);
+		String flight = currentA.receive_bookFlightFromC();
+		System.out.println("Flight request from the client: " + flight);
+		System.out.print("Send flight's price to the client: ");
+		int price = /* parse me! */ Integer.parseInt(safeRead(readerA));
+		currentA.send_farePriceToC(price);
+		
 		switch(currentA.receive_Choice1LabelFromB()) {
 			case APPROVE:
-				Boolean payload3 = currentA.receive_approveBooleanFromB();
-				System.out.println("Received from B: " + payload3);
-				System.out.print("Send to BC: ");
-				String payload4 = safeRead(readerA);
-				currentA.send_invoiceStringToBC(payload4);
+				String payload3 = currentA.receive_approveCodeFromB();
+				System.out.println("Received approved code from the bank: " + payload3);
+				int payload4 = currentA.receive_paymentPriceFromB();
+				System.out.println("Received the payment from the bank: " + payload4);
+				String invoice = flight + " " + price;
+				System.out.println("Sending invoice to the client: " + invoice);
+				//String payload5 = /* parse me! */ safeRead(readerA);	//alterar
+				currentA.send_invoiceInvoiceToC(invoice);
+				String ticket = flight.substring(0, 1) + "8456923 " + flight;
+				System.out.println("Sending ticket to the client: " + ticket);	//alterar
+				//String payload6 = /* parse me! */ safeRead(readerA);
+				currentA.send_ticketTicketToC(ticket);
 				break;
 			case REFUSE:
-				Boolean payload5 = currentA.receive_refuseBooleanFromB();
-				System.out.println("Received from B: " + payload5);
+				String payload7 = currentA.receive_refuseCodeFromB();
+				System.out.println("Received refuse code from the bank: " + payload7);
 				break;
 		}
 	}
